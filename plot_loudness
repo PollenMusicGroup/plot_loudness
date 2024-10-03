@@ -347,7 +347,7 @@ sanitize_for_sed() {
     echo "${1}" | sed 's/[/&]/\\&/g' | sed 's/"/\\\\"/g'
 }
 
-sed -i \
+sed \
     -e "s/T_WIDTH/${width}/g" \
     -e "s/T_HEIGHT/${height}/g" \
     -e "s/T_DURATION/${duration}/" \
@@ -359,7 +359,9 @@ sed -i \
     -e "s/T_LUFSI/${lufsi}/" \
     -e "s/T_DAT_FILE/$(sanitize_for_sed "${loudness_dat_file}")/" \
     -e "s/T_PSR_OFFSET/${psr_offset}/" \
-    "${loudness_gp_file}"
+    "${loudness_gp_file}" > "${loudness_gp_file}.tmp"
+    
+mv "${loudness_gp_file}.tmp" "${loudness_gp_file}"
 
 if [ "${is_psr}" = "no" ]; then
     sed -i \
